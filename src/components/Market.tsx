@@ -8,16 +8,40 @@ import {useEffect, useState} from "react";
 import {Button, Card, Col, Image, Row, Skeleton} from "antd";
 import { Link } from "react-router-dom";
 import { BsPersonCircle } from "react-icons/bs";
+import MarketContract from "../contractPorts/MarketContract";
+import { ethers } from "ethers";
 
 const Market = () => {
   const { isActive, activate, deActivate } = useWeb3();
   const { connection } = useConnection();
+  const provider = connection.provider;
 
   const {getAllSellingItems} = useMarketContract();
   const [sellingItems, setSellingItems] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
 
   console.log("sellingItems",sellingItems);
+
+  const buyItem = async (itemId : any) => {
+    if (!provider) {
+      throw new Error("Meta mask not installed or not connected");
+    }
+    const signer = provider.getSigner();
+    const address = await signer.getAddress();
+    const marketContract = new MarketContract(provider, address)
+    const item = await marketContract.getMarketItemAt(itemId);
+    const priceInWei = item[3];
+    const feePercent = await marketContract.getFee()
+    const price = priceInWei.mul(feePercent.add(100)).div(100);
+    const balance = await provider.getBalance(address);
+    console.log("value",price,balance);
+    if (balance.lt(price)) {
+      throw new Error('Insufficient balance');
+    }
+    
+    const txnResp = await marketContract.purchaseItem(itemId,price);
+    const txnReceipt = await txnResp.wait();
+  }
   
   const fetchSellingItems = async () => {
     try {
@@ -82,7 +106,7 @@ const Market = () => {
                     Price: {item.price.toFixed(4)} BNB
                   </div>
                   <div>
-                    <Button>Buy</Button>
+                    <Button onClick={() => buyItem(item.itemId)}>Buy</Button>
                   </div>
                 </Card>
               </Col>

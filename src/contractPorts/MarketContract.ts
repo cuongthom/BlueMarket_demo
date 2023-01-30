@@ -26,6 +26,9 @@ class MarketContract extends BaseContract {
   async getTotalItems(): Promise<BigNumber> {
     return await this.getContract().itemCount();
   }
+  async purchaseItem( itemId: number, price: BigNumber): Promise<any> {
+    return await this.getContract().purchaseItem(itemId,{value: price} );
+  }
 }
 
 export default MarketContract;

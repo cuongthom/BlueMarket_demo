@@ -28,12 +28,12 @@ function Home() {
             </div>
             <button
               onClick={isActive ? deActivate : activate}
-              className="text-white text-xl w-20 overflow-hidden text-ellipsis whitespace-nowrap"
+              className="text-white text-xl w-16 overflow-hidden text-ellipsis whitespace-nowrap"
             >
               {isActive ? (
                 connection.address
               ) : (
-                <BsPersonCircle className="text-4xl" />
+                <BsPersonCircle className="text-4xl " />
               )}
             </button>
           </div>

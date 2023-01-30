@@ -1,10 +1,11 @@
 import { BaseContract } from "./BaseContract";
 import { ethers } from "ethers";
-import { BLUE_NFT_ADDRESS, ABI_CONTRACT_BLUE } from "../constants";
+import { BLUE_NFT_ADDRESS } from "../constants";
+import BlueABI from "../contractPorts/abis/BlueABI.json"
 
 class BlueMarketContract extends BaseContract {
   constructor(provider: ethers.providers.Web3Provider, account = "") {
-    super(provider, BLUE_NFT_ADDRESS, ABI_CONTRACT_BLUE, account);
+    super(provider, BLUE_NFT_ADDRESS, BlueABI, account);
   }
 
   async approved(address: string, id: number): Promise<any> {

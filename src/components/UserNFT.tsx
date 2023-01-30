@@ -31,6 +31,8 @@ const UserNFT = () => {
     const sellPromise = new Promise(async (resolve, reject) => {
       try {
         const { amount } = values;
+       
+        
         const amountInWei = ethers.utils.parseEther(amount.toString());
         const resp = await listItem(
           BLUE_NFT_ADDRESS,
