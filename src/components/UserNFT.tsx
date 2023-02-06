@@ -55,7 +55,7 @@ const UserNFT = () => {
       error: "Failed to sell",
     });
   };
-  console.log("data", data);
+
 
   return (
     <>

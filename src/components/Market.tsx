@@ -12,15 +12,21 @@ import MarketContract from "../contractPorts/MarketContract";
 import { ethers } from "ethers";
 
 const Market = () => {
+  
   const { isActive, activate, deActivate } = useWeb3();
   const { connection } = useConnection();
   const provider = connection.provider;
 
   const {getAllSellingItems} = useMarketContract();
-  const [sellingItems, setSellingItems] = useState<any[]>([])
-  const [loading, setLoading] = useState(false)
 
-  console.log("sellingItems",sellingItems);
+  
+  
+ 
+  const [sellingItems, setSellingItems] = useState<any[]>([])
+  const [d, setLoading] = useState(false)
+
+  
+
 
   const buyItem = async (itemId : any) => {
     if (!provider) {
@@ -47,7 +53,6 @@ const Market = () => {
     try {
       setLoading(true)
       const res = await getAllSellingItems()
-      console.log('res', res)
       setSellingItems(res)
     } catch (err) {
       console.log(err)
@@ -93,7 +98,7 @@ const Market = () => {
         <h4 className="text-4xl py-10">Market place</h4>
         <Row gutter={24}>
           {
-            loading ? <Skeleton/> : sellingItems.map((item: any) => (
+            d ? <Skeleton/> : sellingItems.map((item: any) => (
               <Col span={6} key={item.tokenId}>
                 <Card
                   hoverable
@@ -113,10 +118,8 @@ const Market = () => {
             ))
           }
           <Col span={6}>
-
           </Col>
         </Row>
-
       </div>
     </div>
   )

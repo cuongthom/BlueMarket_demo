@@ -37,14 +37,20 @@ const useMarketContract = () => {
       throw new Error("Meta mask not installed or not connected");
     }
     const marketContract = new MarketContract(provider);
-    const totalItems = (await marketContract.getTotalItems()).toNumber();
+    const totalItems = await marketContract.getTotalItems()
+    console.log("totalItemssss",totalItems);
+    
     const feePercent = (await marketContract.getFee()).toNumber();
+    console.log("feePercent",feePercent);
+    
     const listPromise = Array.from(Array(totalItems).keys()).map(
       async (index) => {
         try {
           const item = await marketContract.getMarketItemAt(index + 1);
+          // console.log("item",item);
           const itemId = item[0].toNumber();
           const nftAddress = item[1];
+
           const tokenId = item[2].toNumber();
           const priceInWei = item[3];
           const mintPrice = parseFloat(ethers.utils.formatEther(priceInWei));
@@ -65,14 +71,25 @@ const useMarketContract = () => {
         }
       }
     );
+
+    
+
     const items = await Promise.all(listPromise);
+      console.log("items",items);
+      
     const res: any[] = [];
+    console.log("res",res);
+    
 
     const sellingItemTrackingInApi = await marketAPI.getNFTofAnAddress(
       MARKET_CONTRACT_ADDRESS
     );
+   
+    
 
     items.forEach((item: any) => {
+      
+      
       if (item.isSold) {
         return;
       }

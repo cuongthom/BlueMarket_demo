@@ -7,7 +7,10 @@ import { Link } from "react-router-dom";
 function Home() {
   const { isActive, activate, deActivate } = useWeb3();
   const { connection } = useConnection();
-  console.log("connection",connection);
+
+
+  
+
   
   return (
     <>
